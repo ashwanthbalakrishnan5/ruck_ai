@@ -1,280 +1,283 @@
-import { useState } from 'react';
 import {
-  Plus,
-  Clock,
-  DollarSign,
   AlertTriangle,
-  TrendingUp,
-  MapPin,
-  ChevronRight,
-  Package,
   Truck,
-  CheckCircle,
-  Brain,
+  Package,
+  Clock,
+  ChevronRight,
   ShoppingCart,
+  MapPin,
+  Check,
 } from 'lucide-react';
-import { mockProjects, dashboardStats } from '../data/mockProjects';
 import { mockPredictions } from '../data/mockPredictions';
 import { mockInventory } from '../data/mockInventory';
 
-function StatCard({ icon: Icon, label, value, trend, trendUp }) {
+// Alerts that need immediate attention
+function AlertsSection({ project }) {
+  const alerts = [];
+
+  // Check for low stock
+  const lowStock = mockInventory.filter(item => item.statusColor === 'amber');
+  if (lowStock.length > 0) {
+    alerts.push({
+      type: 'warning',
+      message: `Low stock: ${lowStock.map(i => i.material).join(', ')}`,
+      action: 'Order Now',
+    });
+  }
+
+  if (alerts.length === 0) return null;
+
   return (
-    <div className="bg-white rounded-lg border border-[#E5E5E5] p-4">
-      <div className="flex items-center justify-between mb-2">
-        <Icon className="w-5 h-5 text-[#666]" />
-        {trend && (
-          <span className={`text-xs font-medium ${trendUp ? 'text-green-600' : 'text-red-600'}`}>
-            {trend}
-          </span>
-        )}
-      </div>
-      <p className="text-2xl font-bold text-[#1a1a1a]">{value}</p>
-      <p className="text-sm text-[#666]">{label}</p>
+    <div className="space-y-2 mb-6">
+      {alerts.map((alert, idx) => (
+        <div
+          key={idx}
+          className="flex items-center justify-between px-4 py-3 bg-amber-50 border border-amber-200 rounded-lg"
+        >
+          <div className="flex items-center gap-3">
+            <AlertTriangle className="w-5 h-5 text-amber-500" />
+            <span className="text-sm text-amber-800">{alert.message}</span>
+          </div>
+          <button className="text-sm font-medium text-amber-700 hover:text-amber-900">
+            {alert.action} →
+          </button>
+        </div>
+      ))}
     </div>
   );
 }
 
-function ProjectRow({ project, onClick }) {
-  const statusColors = {
-    green: 'bg-green-100 text-green-700',
-    blue: 'bg-blue-100 text-blue-700',
-    amber: 'bg-amber-100 text-amber-700',
-  };
+// Today's section - deliveries and urgent items
+function TodaySection({ project }) {
+  const inTransit = mockInventory.filter(item => item.inTransit);
+  const urgentPredictions = mockPredictions.filter(p =>
+    p.neededBy.includes('Thursday') || p.neededBy.includes('Friday')
+  );
 
   return (
-    <div
-      onClick={onClick}
-      className="flex items-center justify-between p-4 hover:bg-[#FAFAFA] cursor-pointer border-b border-[#E5E5E5] last:border-b-0"
-    >
-      <div className="flex items-center gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <h3 className="font-medium text-[#1a1a1a]">{project.name}</h3>
-            <span className={`text-xs px-2 py-0.5 rounded-full ${statusColors[project.statusColor]}`}>
-              {project.status}
-            </span>
+    <div className="mb-8">
+      <h2 className="text-lg font-semibold text-[#1a1a1a] mb-4">Today</h2>
+      <div className="grid grid-cols-2 gap-4">
+        {/* Incoming Deliveries */}
+        <div className="bg-white rounded-lg border border-[#E5E5E5] p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <Truck className="w-5 h-5 text-blue-500" />
+            <span className="font-medium text-[#1a1a1a]">Incoming</span>
           </div>
-          <div className="flex items-center gap-1 text-sm text-[#666] mt-1">
-            <MapPin className="w-3 h-3" />
-            {project.location}
+          {inTransit.length > 0 ? (
+            <div className="space-y-3">
+              {inTransit.map((item, idx) => (
+                <div key={idx} className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-[#1a1a1a]">{item.material}</p>
+                    <p className="text-xs text-[#666]">{item.inTransit}</p>
+                  </div>
+                  <button className="text-xs text-blue-600 hover:text-blue-800">
+                    Track
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-[#666]">No deliveries today</p>
+          )}
+        </div>
+
+        {/* Items to Order */}
+        <div className="bg-white rounded-lg border border-[#E5E5E5] p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <ShoppingCart className="w-5 h-5 text-[#FFA500]" />
+            <span className="font-medium text-[#1a1a1a]">To Order</span>
           </div>
+          {urgentPredictions.length > 0 ? (
+            <div>
+              <p className="text-2xl font-bold text-[#1a1a1a]">{urgentPredictions.length}</p>
+              <p className="text-sm text-[#666] mb-2">items needed this week</p>
+              <button className="text-sm text-[#FFA500] font-medium hover:text-[#E69500]">
+                Review →
+              </button>
+            </div>
+          ) : (
+            <p className="text-sm text-[#666]">All caught up</p>
+          )}
         </div>
       </div>
-      <div className="flex items-center gap-6">
+    </div>
+  );
+}
+
+// This Week - Predictions
+function PredictionsSection({ project, onOrder }) {
+  return (
+    <div className="mb-8">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold text-[#1a1a1a]">This Week</h2>
+        <span className="text-sm text-[#666]">AI Predictions</span>
+      </div>
+      <div className="bg-white rounded-lg border border-[#E5E5E5] overflow-hidden">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA]">
+              <th className="text-left text-xs font-medium text-[#666] px-4 py-3">Material</th>
+              <th className="text-left text-xs font-medium text-[#666] px-4 py-3">Qty</th>
+              <th className="text-left text-xs font-medium text-[#666] px-4 py-3">Need By</th>
+              <th className="text-right text-xs font-medium text-[#666] px-4 py-3">Est. Cost</th>
+              <th className="text-right text-xs font-medium text-[#666] px-4 py-3"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {mockPredictions.map((prediction) => (
+              <tr key={prediction.id} className="border-b border-[#E5E5E5] last:border-b-0 hover:bg-[#FAFAFA]">
+                <td className="px-4 py-3">
+                  <p className="text-sm font-medium text-[#1a1a1a]">{prediction.material}</p>
+                  <p className="text-xs text-[#999]">{prediction.confidence}% confidence</p>
+                </td>
+                <td className="px-4 py-3 text-sm text-[#1a1a1a]">{prediction.quantity}</td>
+                <td className="px-4 py-3">
+                  <span className="text-sm text-[#1a1a1a]">{prediction.neededBy.split(',')[0]}</span>
+                </td>
+                <td className="px-4 py-3 text-right text-sm font-medium text-[#1a1a1a]">
+                  ${prediction.estimatedCost.toLocaleString()}
+                </td>
+                <td className="px-4 py-3 text-right">
+                  <button
+                    onClick={() => onOrder(prediction)}
+                    className="px-3 py-1.5 bg-[#FFA500] text-white text-sm font-medium rounded-md hover:bg-[#E69500] transition-colors"
+                  >
+                    Order
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+// Inventory Summary
+function InventorySection({ project }) {
+  const onSite = mockInventory.filter(i => !i.inTransit && i.statusColor === 'green').length;
+  const lowStock = mockInventory.filter(i => i.statusColor === 'amber').length;
+  const inTransit = mockInventory.filter(i => i.inTransit).length;
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold text-[#1a1a1a]">Inventory</h2>
+        <button className="text-sm text-[#FFA500] hover:text-[#E69500]">View All →</button>
+      </div>
+
+      {/* Summary Stats */}
+      <div className="grid grid-cols-3 gap-4 mb-4">
+        <div className="bg-white rounded-lg border border-[#E5E5E5] p-4 text-center">
+          <p className="text-2xl font-bold text-[#1a1a1a]">{onSite}</p>
+          <p className="text-xs text-[#666]">On Site</p>
+        </div>
+        <div className="bg-white rounded-lg border border-[#E5E5E5] p-4 text-center">
+          <p className="text-2xl font-bold text-blue-600">{inTransit}</p>
+          <p className="text-xs text-[#666]">In Transit</p>
+        </div>
+        <div className="bg-white rounded-lg border border-amber-200 bg-amber-50 p-4 text-center">
+          <p className="text-2xl font-bold text-amber-600">{lowStock}</p>
+          <p className="text-xs text-amber-700">Low Stock</p>
+        </div>
+      </div>
+
+      {/* Inventory List */}
+      <div className="bg-white rounded-lg border border-[#E5E5E5]">
+        {mockInventory.map((item, idx) => (
+          <div
+            key={item.id}
+            className={`flex items-center justify-between px-4 py-3 ${
+              idx !== mockInventory.length - 1 ? 'border-b border-[#E5E5E5]' : ''
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              {item.statusColor === 'green' && <Check className="w-4 h-4 text-green-500" />}
+              {item.statusColor === 'amber' && <AlertTriangle className="w-4 h-4 text-amber-500" />}
+              {item.statusColor === 'blue' && <Truck className="w-4 h-4 text-blue-500" />}
+              <div>
+                <p className="text-sm font-medium text-[#1a1a1a]">{item.material}</p>
+                <p className="text-xs text-[#666]">{item.onSite || item.inTransit}</p>
+              </div>
+            </div>
+            <span className={`text-xs font-medium ${
+              item.statusColor === 'green' ? 'text-green-600' :
+              item.statusColor === 'amber' ? 'text-amber-600' : 'text-blue-600'
+            }`}>
+              {item.status}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Project Info Card
+function ProjectInfo({ project }) {
+  if (!project) return null;
+
+  return (
+    <div className="bg-white rounded-lg border border-[#E5E5E5] p-4 mb-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2 text-sm text-[#666] mb-1">
+            <MapPin className="w-4 h-4" />
+            {project.location}
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-[#666]">Phase: <span className="font-medium text-[#1a1a1a]">{project.phase}</span></span>
+            <span className="text-sm text-[#666]">Budget: <span className="font-medium text-[#1a1a1a]">${project.budget.toLocaleString()}</span></span>
+          </div>
+        </div>
         <div className="text-right">
-          <p className="text-sm font-medium text-[#1a1a1a]">{project.progress}%</p>
-          <div className="w-24 h-1.5 bg-[#E5E5E5] rounded-full mt-1">
+          <p className="text-2xl font-bold text-[#1a1a1a]">{project.progress}%</p>
+          <div className="w-32 h-2 bg-[#E5E5E5] rounded-full mt-1">
             <div
               className="h-full bg-[#FFA500] rounded-full"
               style={{ width: `${project.progress}%` }}
             />
           </div>
         </div>
-        {project.predictionsReady > 0 && (
-          <span className="flex items-center gap-1 text-sm text-[#FFA500] font-medium">
-            <Brain className="w-4 h-4" />
-            {project.predictionsReady}
-          </span>
-        )}
-        <ChevronRight className="w-5 h-5 text-[#999]" />
       </div>
     </div>
   );
 }
 
-function PredictionRow({ prediction, onOrder }) {
-  const confidenceColor = prediction.confidence >= 90 ? 'text-green-600' : prediction.confidence >= 80 ? 'text-amber-600' : 'text-blue-600';
-
-  return (
-    <div className="flex items-center justify-between p-4 border-b border-[#E5E5E5] last:border-b-0">
-      <div className="flex-1">
-        <p className="font-medium text-[#1a1a1a]">{prediction.material}</p>
-        <p className="text-sm text-[#666]">{prediction.quantity} • Needed by {prediction.neededBy}</p>
-      </div>
-      <div className="flex items-center gap-4">
-        <div className="text-right">
-          <p className={`text-sm font-medium ${confidenceColor}`}>{prediction.confidence}%</p>
-          <p className="text-xs text-[#999]">confidence</p>
-        </div>
-        <p className="font-medium text-[#1a1a1a]">${prediction.estimatedCost.toLocaleString()}</p>
-        <button
-          onClick={() => onOrder(prediction)}
-          className="px-4 py-2 bg-[#FFA500] text-white text-sm font-medium rounded-lg hover:bg-[#E69500] transition-colors"
-        >
-          Order
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function InventoryItem({ item }) {
-  const statusColors = {
-    green: 'text-green-600',
-    amber: 'text-amber-600',
-    blue: 'text-blue-600',
-  };
-
-  return (
-    <div className="flex items-center justify-between p-3 border-b border-[#E5E5E5] last:border-b-0">
-      <div>
-        <p className="font-medium text-[#1a1a1a] text-sm">{item.material}</p>
-        <p className="text-xs text-[#666]">{item.onSite || item.inTransit}</p>
-      </div>
-      <div className="flex items-center gap-2">
-        {item.statusColor === 'amber' && <AlertTriangle className="w-4 h-4 text-amber-500" />}
-        {item.inTransit && <Truck className="w-4 h-4 text-blue-500" />}
-        <span className={`text-xs font-medium ${statusColors[item.statusColor]}`}>
-          {item.status}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-export default function Dashboard({ onNewProject }) {
-  const [selectedProject, setSelectedProject] = useState(null);
-
+export default function Dashboard({ project }) {
   const handleOrder = (prediction) => {
     alert(`Order placed for ${prediction.material}`);
   };
 
+  if (!project) {
+    return (
+      <div className="max-w-4xl mx-auto px-6 py-12 text-center">
+        <Package className="w-12 h-12 text-[#999] mx-auto mb-4" />
+        <h2 className="text-xl font-semibold text-[#1a1a1a] mb-2">Select a Project</h2>
+        <p className="text-[#666]">Choose a project from the dropdown above to get started</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-7xl mx-auto px-6 py-6">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-[#1a1a1a]">Dashboard</h1>
-          <p className="text-[#666]">Welcome back, Sarah</p>
-        </div>
-        <button
-          onClick={onNewProject}
-          className="flex items-center gap-2 px-4 py-2 bg-[#FFA500] text-white font-medium rounded-lg hover:bg-[#E69500] transition-colors"
-        >
-          <Plus className="w-5 h-5" />
-          New Project
-        </button>
-      </div>
+    <div className="max-w-4xl mx-auto px-6 py-6">
+      {/* Project Info */}
+      <ProjectInfo project={project} />
 
-      {/* Stats */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
-        <StatCard
-          icon={Clock}
-          label="Hours Saved"
-          value={`${dashboardStats.hoursSavedThisMonth}h`}
-          trend={dashboardStats.hoursTrend}
-          trendUp={true}
-        />
-        <StatCard
-          icon={DollarSign}
-          label="Money Saved"
-          value={`$${dashboardStats.moneySavedThisMonth.toLocaleString()}`}
-          trend={dashboardStats.moneyTrend}
-          trendUp={true}
-        />
-        <StatCard
-          icon={AlertTriangle}
-          label="Stockouts Prevented"
-          value={dashboardStats.stockoutsPrevented}
-        />
-        <StatCard
-          icon={TrendingUp}
-          label="AI Accuracy"
-          value={`${dashboardStats.aiAccuracy}%`}
-          trend={dashboardStats.accuracyTrend}
-          trendUp={true}
-        />
-      </div>
+      {/* Alerts */}
+      <AlertsSection project={project} />
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-3 gap-6">
-        {/* Left Column - Projects */}
-        <div className="col-span-2 space-y-6">
-          {/* Projects */}
-          <div className="bg-white rounded-lg border border-[#E5E5E5]">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-[#E5E5E5]">
-              <h2 className="font-semibold text-[#1a1a1a]">Active Projects</h2>
-              <span className="text-sm text-[#666]">{mockProjects.length} projects</span>
-            </div>
-            <div>
-              {mockProjects.map((project) => (
-                <ProjectRow
-                  key={project.id}
-                  project={project}
-                  onClick={() => setSelectedProject(project)}
-                />
-              ))}
-            </div>
-          </div>
+      {/* Today */}
+      <TodaySection project={project} />
 
-          {/* AI Predictions */}
-          <div className="bg-white rounded-lg border border-[#E5E5E5]">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-[#E5E5E5]">
-              <div className="flex items-center gap-2">
-                <Brain className="w-5 h-5 text-[#FFA500]" />
-                <h2 className="font-semibold text-[#1a1a1a]">AI Predictions</h2>
-              </div>
-              <span className="text-sm text-[#666]">Oak Street Townhomes</span>
-            </div>
-            <div>
-              {mockPredictions.slice(0, 4).map((prediction) => (
-                <PredictionRow
-                  key={prediction.id}
-                  prediction={prediction}
-                  onOrder={handleOrder}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+      {/* This Week - Predictions */}
+      <PredictionsSection project={project} onOrder={handleOrder} />
 
-        {/* Right Column */}
-        <div className="space-y-6">
-          {/* Quick Actions */}
-          <div className="bg-white rounded-lg border border-[#E5E5E5] p-4">
-            <h2 className="font-semibold text-[#1a1a1a] mb-3">Quick Actions</h2>
-            <div className="space-y-2">
-              <button className="w-full flex items-center gap-3 p-3 text-left hover:bg-[#FAFAFA] rounded-lg transition-colors">
-                <Package className="w-5 h-5 text-[#666]" />
-                <span className="text-sm text-[#1a1a1a]">Track Deliveries</span>
-              </button>
-              <button className="w-full flex items-center gap-3 p-3 text-left hover:bg-[#FAFAFA] rounded-lg transition-colors">
-                <ShoppingCart className="w-5 h-5 text-[#666]" />
-                <span className="text-sm text-[#1a1a1a]">Order History</span>
-              </button>
-              <button className="w-full flex items-center gap-3 p-3 text-left hover:bg-[#FAFAFA] rounded-lg transition-colors">
-                <Brain className="w-5 h-5 text-[#666]" />
-                <span className="text-sm text-[#1a1a1a]">View All Predictions</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Inventory Status */}
-          <div className="bg-white rounded-lg border border-[#E5E5E5]">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-[#E5E5E5]">
-              <h2 className="font-semibold text-[#1a1a1a]">Inventory</h2>
-              <button className="text-sm text-[#FFA500] hover:text-[#E69500]">View All</button>
-            </div>
-            <div>
-              {mockInventory.map((item) => (
-                <InventoryItem key={item.id} item={item} />
-              ))}
-            </div>
-          </div>
-
-          {/* Upcoming Delivery */}
-          <div className="bg-[#FFF8EB] rounded-lg border border-[#FFA500]/20 p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Truck className="w-5 h-5 text-[#FFA500]" />
-              <span className="font-medium text-[#1a1a1a]">Delivery Today</span>
-            </div>
-            <p className="text-sm text-[#666] mb-3">Wire & Conduit • ETA 2:30 PM</p>
-            <button className="text-sm text-[#FFA500] font-medium hover:text-[#E69500]">
-              Track Driver →
-            </button>
-          </div>
-        </div>
-      </div>
+      {/* Inventory */}
+      <InventorySection project={project} />
     </div>
   );
 }
