@@ -71,7 +71,18 @@ export default function NavBar({ selectedProject, onSelectProject, onNewProject 
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
+          {/* New Project Button */}
+          <button
+            onClick={onNewProject}
+            className="flex items-center gap-2 px-4 py-2 bg-[#FFA500] text-white text-sm font-medium rounded-lg hover:bg-[#E69500] transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            New Project
+          </button>
+
+          <div className="w-px h-6 bg-[#E5E5E5] mx-1" />
+
           <button className="relative p-2 hover:bg-[#F5F5F5] rounded-lg transition-colors">
             <Bell className="w-5 h-5 text-[#666]" />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
@@ -79,7 +90,6 @@ export default function NavBar({ selectedProject, onSelectProject, onNewProject 
           <button className="p-2 hover:bg-[#F5F5F5] rounded-lg transition-colors">
             <Settings className="w-5 h-5 text-[#666]" />
           </button>
-          <div className="w-px h-6 bg-[#E5E5E5] mx-2" />
           <button className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#F5F5F5] rounded-lg transition-colors">
             <div className="w-8 h-8 bg-[#E5E5E5] rounded-full flex items-center justify-center">
               <User className="w-4 h-4 text-[#666]" />
