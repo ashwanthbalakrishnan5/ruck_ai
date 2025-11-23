@@ -9,7 +9,7 @@ import './App.css';
 
 function App() {
   return (
-    <div className="min-h-screen bg-bg-gray">
+    <div className="min-h-screen bg-[#F8F9FA]">
       {/* Fixed Navigation */}
       <NavBar />
 
@@ -31,7 +31,7 @@ function App() {
         <MobilePreview />
 
         {/* Footer */}
-        <footer className="bg-text-primary text-white py-8 px-6">
+        <footer className="bg-[#1F2937] text-white py-8 px-6">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6">

@@ -22,20 +22,20 @@ const iconMap = {
 };
 
 function ConfidenceBar({ confidence }) {
-  let color = 'bg-success';
-  let textColor = 'text-success';
+  let color = 'bg-[#10B981]';
+  let textColor = 'text-[#10B981]';
 
   if (confidence < 75) {
-    color = 'bg-info';
-    textColor = 'text-info';
+    color = 'bg-[#3B82F6]';
+    textColor = 'text-[#3B82F6]';
   } else if (confidence < 90) {
-    color = 'bg-warning';
-    textColor = 'text-warning';
+    color = 'bg-[#F59E0B]';
+    textColor = 'text-[#F59E0B]';
   }
 
   return (
     <div className="flex items-center gap-2">
-      <div className="w-20 h-2 bg-bg-gray rounded-full overflow-hidden">
+      <div className="w-20 h-2 bg-[#F8F9FA] rounded-full overflow-hidden">
         <div
           className={`h-full ${color} rounded-full`}
           style={{ width: `${confidence}%` }}
@@ -43,7 +43,7 @@ function ConfidenceBar({ confidence }) {
       </div>
       <span className={`text-sm font-semibold ${textColor}`}>{confidence}%</span>
       {confidence < 75 && (
-        <span className="text-xs text-info bg-info-light px-2 py-0.5 rounded-full">Learning</span>
+        <span className="text-xs text-[#3B82F6] bg-[#DBEAFE] px-2 py-0.5 rounded-full">Learning</span>
       )}
     </div>
   );
@@ -54,34 +54,34 @@ function SupplierDropdown({ suppliers, isOpen, onToggle }) {
     <div className="relative">
       <button
         onClick={onToggle}
-        className="flex items-center gap-1 text-ruck-orange hover:text-ruck-orange-hover font-semibold"
+        className="flex items-center gap-1 text-[#FFA500] hover:text-[#FF9500] font-semibold"
       >
         ${suppliers[0].price.toLocaleString()}
         {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-xl shadow-lg border border-border-gray z-20 overflow-hidden">
-          <div className="p-3 bg-bg-gray border-b border-border-gray">
-            <p className="text-sm font-medium text-text-secondary">Compare Suppliers</p>
+        <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-xl shadow-lg border border-[#E5E7EB] z-20 overflow-hidden">
+          <div className="p-3 bg-[#F8F9FA] border-b border-[#E5E7EB]">
+            <p className="text-sm font-medium text-[#6B7280]">Compare Suppliers</p>
           </div>
           {suppliers.map((supplier, idx) => (
             <div
               key={idx}
-              className={`p-4 border-b border-border-gray last:border-b-0 hover:bg-bg-gray transition-colors ${supplier.bestPrice ? 'bg-success-light/30' : ''}`}
+              className={`p-4 border-b border-[#E5E7EB] last:border-b-0 hover:bg-[#F8F9FA] transition-colors ${supplier.bestPrice ? 'bg-[#D1FAE5]/30' : ''}`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-semibold text-text-primary">{supplier.name}</span>
+                <span className="font-semibold text-[#1F2937]">{supplier.name}</span>
                 <div className="flex items-center gap-1">
-                  <span className="font-bold text-lg text-text-primary">${supplier.price.toLocaleString()}</span>
+                  <span className="font-bold text-lg text-[#1F2937]">${supplier.price.toLocaleString()}</span>
                   {supplier.bestPrice && (
-                    <span className="text-xs bg-success text-white px-2 py-0.5 rounded-full ml-1">BEST</span>
+                    <span className="text-xs bg-[#10B981] text-white px-2 py-0.5 rounded-full ml-1">BEST</span>
                   )}
                 </div>
               </div>
-              <div className="flex items-center gap-4 text-sm text-text-secondary">
+              <div className="flex items-center gap-4 text-sm text-[#6B7280]">
                 <div className="flex items-center gap-1">
-                  <Check className="w-4 h-4 text-success" />
+                  <Check className="w-4 h-4 text-[#10B981]" />
                   <span>In Stock</span>
                 </div>
                 <div className="flex items-center gap-1">
@@ -93,10 +93,10 @@ function SupplierDropdown({ suppliers, isOpen, onToggle }) {
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`w-4 h-4 ${i < Math.floor(supplier.rating) ? 'text-warning fill-warning' : 'text-border-gray'}`}
+                    className={`w-4 h-4 ${i < Math.floor(supplier.rating) ? 'text-[#F59E0B] fill-[#F59E0B]' : 'text-[#E5E7EB]'}`}
                   />
                 ))}
-                <span className="text-sm text-text-secondary ml-1">{supplier.rating}</span>
+                <span className="text-sm text-[#6B7280] ml-1">{supplier.rating}</span>
               </div>
             </div>
           ))}
@@ -111,22 +111,22 @@ function PredictionRow({ prediction, isExpanded, onToggle, openSupplier, setOpen
 
   return (
     <>
-      <tr className="hover:bg-bg-gray/50 transition-colors">
+      <tr className="hover:bg-[#F8F9FA]/50 transition-colors">
         <td className="px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-ruck-orange-light rounded-lg">
-              <Icon className="w-5 h-5 text-ruck-orange" />
+            <div className="p-2 bg-[#FFF4E5] rounded-lg">
+              <Icon className="w-5 h-5 text-[#FFA500]" />
             </div>
-            <span className="font-medium text-text-primary">{prediction.material}</span>
+            <span className="font-medium text-[#1F2937]">{prediction.material}</span>
           </div>
         </td>
-        <td className="px-6 py-4 text-text-primary">{prediction.quantity}</td>
+        <td className="px-6 py-4 text-[#1F2937]">{prediction.quantity}</td>
         <td className="px-6 py-4">
           <ConfidenceBar confidence={prediction.confidence} />
         </td>
         <td className="px-6 py-4">
-          <div className="flex items-center gap-2 text-text-primary">
-            <Calendar className="w-4 h-4 text-text-muted" />
+          <div className="flex items-center gap-2 text-[#1F2937]">
+            <Calendar className="w-4 h-4 text-[#9CA3AF]" />
             {prediction.neededBy}
           </div>
         </td>
@@ -139,25 +139,25 @@ function PredictionRow({ prediction, isExpanded, onToggle, openSupplier, setOpen
         </td>
         <td className="px-6 py-4">
           <div className="flex items-center gap-2">
-            <button className="px-4 py-2 bg-ruck-orange text-white rounded-lg text-sm font-semibold hover:bg-ruck-orange-hover transition-colors whitespace-nowrap">
+            <button className="px-4 py-2 bg-[#FFA500] text-white rounded-lg text-sm font-semibold hover:bg-[#FF9500] transition-colors whitespace-nowrap">
               Order via Ruck
             </button>
             <button
               onClick={onToggle}
-              className="p-2 hover:bg-bg-gray rounded-lg transition-colors"
+              className="p-2 hover:bg-[#F8F9FA] rounded-lg transition-colors"
             >
-              <Info className="w-4 h-4 text-text-muted" />
+              <Info className="w-4 h-4 text-[#9CA3AF]" />
             </button>
           </div>
         </td>
       </tr>
       {isExpanded && (
-        <tr className="bg-ruck-orange-light/50">
+        <tr className="bg-[#FFF4E5]/50">
           <td colSpan={6} className="px-6 py-4">
-            <div className="flex items-start gap-2 text-sm text-text-secondary">
-              <Info className="w-4 h-4 mt-0.5 text-ruck-orange" />
+            <div className="flex items-start gap-2 text-sm text-[#6B7280]">
+              <Info className="w-4 h-4 mt-0.5 text-[#FFA500]" />
               <div>
-                <span className="font-medium text-text-primary">AI Reasoning: </span>
+                <span className="font-medium text-[#1F2937]">AI Reasoning: </span>
                 {prediction.reasoning}
               </div>
             </div>
@@ -177,14 +177,14 @@ export default function PredictionsTable() {
   };
 
   return (
-    <section className="py-12 px-6 bg-bg-gray">
+    <section className="py-12 px-6 bg-[#F8F9FA]">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h2 className="text-3xl font-semibold text-text-primary mb-2">
+          <h2 className="text-3xl font-semibold text-[#1F2937] mb-2">
             AI Material Predictions - Oak Street Townhomes
           </h2>
-          <p className="text-text-secondary">
+          <p className="text-[#6B7280]">
             Based on your project timeline and historical data
           </p>
         </div>
@@ -197,17 +197,17 @@ export default function PredictionsTable() {
                 key={week.week}
                 className={`relative px-6 py-3 rounded-lg text-sm font-medium transition-all ${
                   week.status === 'current'
-                    ? 'bg-ruck-orange text-white shadow-md'
+                    ? 'bg-[#FFA500] text-white shadow-md'
                     : week.status === 'past'
-                    ? 'bg-text-muted/30 text-text-secondary'
-                    : 'bg-border-gray text-text-muted'
+                    ? 'bg-[#9CA3AF]/30 text-[#6B7280]'
+                    : 'bg-[#E5E7EB] text-[#9CA3AF]'
                 }`}
               >
                 {week.label}
                 {week.status === 'current' && (
                   <div className="absolute -bottom-4 left-1/2 -translate-x-1/2">
-                    <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-ruck-orange"></div>
-                    <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-xs text-ruck-orange font-semibold whitespace-nowrap">
+                    <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-[#FFA500]"></div>
+                    <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-xs text-[#FFA500] font-semibold whitespace-nowrap">
                       Current
                     </span>
                   </div>
@@ -218,20 +218,20 @@ export default function PredictionsTable() {
         </div>
 
         {/* Predictions Table */}
-        <div className="bg-white rounded-xl border border-border-gray shadow-sm overflow-hidden">
+        <div className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-bg-gray border-b border-border-gray">
+              <thead className="bg-[#F8F9FA] border-b border-[#E5E7EB]">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-text-primary">Material</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-text-primary">Quantity</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-text-primary">Confidence</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-text-primary">Needed By</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-text-primary">Est. Cost</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-text-primary">Action</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-[#1F2937]">Material</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-[#1F2937]">Quantity</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-[#1F2937]">Confidence</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-[#1F2937]">Needed By</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-[#1F2937]">Est. Cost</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-[#1F2937]">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border-gray">
+              <tbody className="divide-y divide-[#E5E7EB]">
                 {mockPredictions.map((prediction) => (
                   <PredictionRow
                     key={prediction.id}

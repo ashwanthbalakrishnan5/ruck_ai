@@ -6,47 +6,47 @@ const statCards = [
     icon: BarChart3,
     value: dashboardStats.activeProjects,
     label: "Active Projects",
-    borderColor: "border-l-info",
-    iconBg: "bg-info-light",
-    iconColor: "text-info",
+    borderColor: "border-l-[#3B82F6]",
+    iconBg: "bg-[#DBEAFE]",
+    iconColor: "text-[#3B82F6]",
   },
   {
     icon: Brain,
     value: dashboardStats.pendingPredictions,
     label: "Pending Predictions",
-    borderColor: "border-l-ruck-orange",
-    iconBg: "bg-ruck-orange-light",
-    iconColor: "text-ruck-orange",
+    borderColor: "border-l-[#FFA500]",
+    iconBg: "bg-[#FFF4E5]",
+    iconColor: "text-[#FFA500]",
   },
   {
     icon: Package,
     value: dashboardStats.ordersThisMonth,
     label: "Orders This Month",
-    borderColor: "border-l-success",
-    iconBg: "bg-success-light",
-    iconColor: "text-success",
+    borderColor: "border-l-[#10B981]",
+    iconBg: "bg-[#D1FAE5]",
+    iconColor: "text-[#10B981]",
   },
   {
     icon: DollarSign,
     value: `$${dashboardStats.moneySaved.toLocaleString()}`,
     label: "Saved This Month",
-    borderColor: "border-l-success",
-    iconBg: "bg-success-light",
-    iconColor: "text-success",
-    valueColor: "text-success",
+    borderColor: "border-l-[#10B981]",
+    iconBg: "bg-[#D1FAE5]",
+    iconColor: "text-[#10B981]",
+    valueColor: "text-[#10B981]",
   },
 ];
 
 export default function DashboardStats() {
   return (
-    <section className="bg-bg-gray py-12 px-6">
+    <section className="bg-[#F8F9FA] py-12 px-6">
       <div className="max-w-7xl mx-auto">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-text-primary mb-2">
+          <h1 className="text-4xl font-bold text-[#1F2937] mb-2">
             Welcome back, Sarah
           </h1>
-          <p className="text-text-secondary text-lg">
+          <p className="text-[#6B7280] text-lg">
             You have 3 active projects with 5 pending predictions
           </p>
         </div>
@@ -58,17 +58,17 @@ export default function DashboardStats() {
             return (
               <div
                 key={index}
-                className={`bg-white rounded-xl p-6 shadow-sm border border-border-gray border-l-4 ${stat.borderColor} hover:shadow-md transition-shadow`}
+                className={`bg-white rounded-xl p-6 shadow-sm border border-[#E5E7EB] border-l-4 ${stat.borderColor} hover:shadow-md transition-shadow`}
               >
                 <div className="flex items-start gap-4">
                   <div className={`p-3 rounded-lg ${stat.iconBg}`}>
                     <Icon className={`w-6 h-6 ${stat.iconColor}`} />
                   </div>
                   <div>
-                    <p className={`text-4xl font-bold ${stat.valueColor || 'text-text-primary'}`}>
+                    <p className={`text-4xl font-bold ${stat.valueColor || 'text-[#1F2937]'}`}>
                       {stat.value}
                     </p>
-                    <p className="text-sm text-text-secondary mt-1">
+                    <p className="text-sm text-[#6B7280] mt-1">
                       {stat.label}
                     </p>
                   </div>

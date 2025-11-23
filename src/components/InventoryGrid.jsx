@@ -20,16 +20,16 @@ const iconMap = {
 };
 
 const badgeColors = {
-  green: 'bg-success-light text-success-dark',
-  amber: 'bg-warning-light text-warning-dark',
-  blue: 'bg-info-light text-info-dark',
-  gray: 'bg-bg-gray text-text-secondary',
+  green: 'bg-[#D1FAE5] text-[#065F46]',
+  amber: 'bg-[#FEF3C7] text-[#92400E]',
+  blue: 'bg-[#DBEAFE] text-[#1E40AF]',
+  gray: 'bg-[#F8F9FA] text-[#6B7280]',
 };
 
 const statusColors = {
-  green: 'text-success',
-  amber: 'text-warning',
-  blue: 'text-info',
+  green: 'text-[#10B981]',
+  amber: 'text-[#F59E0B]',
+  blue: 'text-[#3B82F6]',
 };
 
 const filterOptions = ['All Materials', 'On Site', 'In Transit', 'Low Stock'];
@@ -38,7 +38,7 @@ function ToggleSwitch({ enabled }) {
   return (
     <button
       className={`relative w-11 h-6 rounded-full transition-colors ${
-        enabled ? 'bg-success' : 'bg-border-gray'
+        enabled ? 'bg-[#10B981]' : 'bg-[#E5E7EB]'
       }`}
     >
       <span
@@ -53,14 +53,14 @@ function ToggleSwitch({ enabled }) {
 function InventoryCard({ item }) {
   const Icon = iconMap[item.icon] || Package;
   const badgeColor = badgeColors[item.badgeColor] || badgeColors.gray;
-  const statusColor = statusColors[item.statusColor] || 'text-text-secondary';
+  const statusColor = statusColors[item.statusColor] || 'text-[#6B7280]';
 
   return (
-    <div className="bg-white rounded-xl border border-border-gray p-5 shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-white rounded-xl border border-[#E5E7EB] p-5 shadow-sm hover:shadow-md transition-shadow">
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
-        <div className="p-3 bg-bg-gray rounded-lg">
-          <Icon className="w-6 h-6 text-text-secondary" />
+        <div className="p-3 bg-[#F8F9FA] rounded-lg">
+          <Icon className="w-6 h-6 text-[#6B7280]" />
         </div>
         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${badgeColor}`}>
           {item.badge}
@@ -68,14 +68,14 @@ function InventoryCard({ item }) {
       </div>
 
       {/* Material Name */}
-      <h4 className="text-lg font-semibold text-text-primary mb-2">{item.material}</h4>
+      <h4 className="text-lg font-semibold text-[#1F2937] mb-2">{item.material}</h4>
 
       {/* On Site / In Transit */}
       <div className="mb-3">
         {item.inTransit ? (
-          <p className="text-info font-medium">{item.inTransit}</p>
+          <p className="text-[#3B82F6] font-medium">{item.inTransit}</p>
         ) : item.onSite ? (
-          <p className={`font-medium ${item.statusColor === 'amber' ? 'text-warning' : 'text-text-primary'}`}>
+          <p className={`font-medium ${item.statusColor === 'amber' ? 'text-[#F59E0B]' : 'text-[#1F2937]'}`}>
             {item.onSite}
           </p>
         ) : null}
@@ -83,35 +83,35 @@ function InventoryCard({ item }) {
 
       {/* Status */}
       <div className="flex items-center gap-2 mb-3">
-        {item.statusColor === 'amber' && <AlertTriangle className="w-4 h-4 text-warning" />}
+        {item.statusColor === 'amber' && <AlertTriangle className="w-4 h-4 text-[#F59E0B]" />}
         <span className={`text-sm font-medium ${statusColor}`}>{item.status}</span>
       </div>
 
       {/* Last Updated */}
-      <p className="text-xs text-text-muted mb-4">Last Updated: {item.lastUpdated}</p>
+      <p className="text-xs text-[#9CA3AF] mb-4">Last Updated: {item.lastUpdated}</p>
 
       {/* Actions */}
-      <div className="pt-4 border-t border-border-gray">
+      <div className="pt-4 border-t border-[#E5E7EB]">
         {item.hasAutoOrder && (
           <div className="flex items-center justify-between">
-            <span className="text-sm text-text-secondary">Auto-order</span>
+            <span className="text-sm text-[#6B7280]">Auto-order</span>
             <ToggleSwitch enabled={item.autoOrderEnabled} />
           </div>
         )}
         {item.trackable && (
-          <button className="flex items-center gap-2 text-sm text-info font-medium hover:text-info-dark transition-colors">
+          <button className="flex items-center gap-2 text-sm text-[#3B82F6] font-medium hover:text-[#1E40AF] transition-colors">
             <MapPin className="w-4 h-4" />
             Track Driver
           </button>
         )}
         {item.hasScanQR && (
-          <button className="flex items-center gap-2 text-sm text-ruck-orange font-medium hover:text-ruck-orange-hover transition-colors">
+          <button className="flex items-center gap-2 text-sm text-[#FFA500] font-medium hover:text-[#FF9500] transition-colors">
             <QrCode className="w-4 h-4" />
             Scan QR Code
           </button>
         )}
         {!item.hasAutoOrder && !item.trackable && !item.hasScanQR && (
-          <button className="text-sm text-ruck-orange font-medium hover:text-ruck-orange-hover transition-colors">
+          <button className="text-sm text-[#FFA500] font-medium hover:text-[#FF9500] transition-colors">
             View Details
           </button>
         )}
@@ -128,7 +128,7 @@ export default function InventoryGrid() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <h2 className="text-3xl font-semibold text-text-primary">
+          <h2 className="text-3xl font-semibold text-[#1F2937]">
             Current Inventory - Oak Street Townhomes
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -138,8 +138,8 @@ export default function InventoryGrid() {
                 onClick={() => setActiveFilter(filter)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeFilter === filter
-                    ? 'bg-ruck-orange text-white'
-                    : 'bg-bg-gray text-text-secondary hover:bg-border-gray'
+                    ? 'bg-[#FFA500] text-white'
+                    : 'bg-[#F8F9FA] text-[#6B7280] hover:bg-[#E5E7EB]'
                 }`}
               >
                 {filter}
@@ -156,33 +156,33 @@ export default function InventoryGrid() {
         </div>
 
         {/* Quick Stats Bar */}
-        <div className="bg-bg-gray rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
+        <div className="bg-[#F8F9FA] rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <Package className="w-5 h-5 text-text-muted" />
-              <span className="text-sm text-text-secondary">
-                Total Items: <span className="font-semibold text-text-primary">{inventoryStats.totalItems}</span>
+              <Package className="w-5 h-5 text-[#9CA3AF]" />
+              <span className="text-sm text-[#6B7280]">
+                Total Items: <span className="font-semibold text-[#1F2937]">{inventoryStats.totalItems}</span>
               </span>
             </div>
-            <div className="hidden sm:block w-px h-6 bg-border-gray" />
+            <div className="hidden sm:block w-px h-6 bg-[#E5E7EB]" />
             <div className="flex items-center gap-2">
-              <span className="text-sm text-text-secondary">
-                Total Value: <span className="font-semibold text-text-primary">${inventoryStats.totalValue.toLocaleString()}</span>
+              <span className="text-sm text-[#6B7280]">
+                Total Value: <span className="font-semibold text-[#1F2937]">${inventoryStats.totalValue.toLocaleString()}</span>
               </span>
             </div>
           </div>
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-warning" />
-              <span className="text-sm text-text-secondary">
-                Low Stock Alerts: <span className="font-semibold text-warning">{inventoryStats.lowStockAlerts}</span>
+              <AlertTriangle className="w-5 h-5 text-[#F59E0B]" />
+              <span className="text-sm text-[#6B7280]">
+                Low Stock Alerts: <span className="font-semibold text-[#F59E0B]">{inventoryStats.lowStockAlerts}</span>
               </span>
             </div>
-            <div className="hidden sm:block w-px h-6 bg-border-gray" />
+            <div className="hidden sm:block w-px h-6 bg-[#E5E7EB]" />
             <div className="flex items-center gap-2">
-              <TruckIcon className="w-5 h-5 text-info" />
-              <span className="text-sm text-text-secondary">
-                In Transit: <span className="font-semibold text-info">{inventoryStats.inTransit}</span>
+              <TruckIcon className="w-5 h-5 text-[#3B82F6]" />
+              <span className="text-sm text-[#6B7280]">
+                In Transit: <span className="font-semibold text-[#3B82F6]">{inventoryStats.inTransit}</span>
               </span>
             </div>
           </div>

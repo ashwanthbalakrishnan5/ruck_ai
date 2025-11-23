@@ -8,10 +8,10 @@ export default function ProjectsGrid() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-semibold text-text-primary">
+          <h2 className="text-3xl font-semibold text-[#1F2937]">
             Active Projects
           </h2>
-          <button className="flex items-center gap-2 px-5 py-3 bg-ruck-orange text-white rounded-lg font-semibold hover:bg-ruck-orange-hover transition-colors shadow-sm">
+          <button className="flex items-center gap-2 px-5 py-3 bg-[#FFA500] text-white rounded-lg font-semibold hover:bg-[#FF9500] transition-colors shadow-sm">
             <Plus className="w-5 h-5" />
             Create New Project
           </button>

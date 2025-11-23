@@ -2,19 +2,19 @@ import { MapPin, Loader2 } from 'lucide-react';
 
 const statusColors = {
   green: {
-    bg: 'bg-success-light',
-    text: 'text-success-dark',
-    progress: 'bg-success',
+    bg: 'bg-[#D1FAE5]',
+    text: 'text-[#065F46]',
+    progress: 'bg-[#10B981]',
   },
   blue: {
-    bg: 'bg-info-light',
-    text: 'text-info-dark',
-    progress: 'bg-info',
+    bg: 'bg-[#DBEAFE]',
+    text: 'text-[#1E40AF]',
+    progress: 'bg-[#3B82F6]',
   },
   amber: {
-    bg: 'bg-warning-light',
-    text: 'text-warning-dark',
-    progress: 'bg-warning',
+    bg: 'bg-[#FEF3C7]',
+    text: 'text-[#92400E]',
+    progress: 'bg-[#F59E0B]',
   },
 };
 
@@ -23,7 +23,7 @@ export default function ProjectCard({ project }) {
   const phaseColors = statusColors[project.phaseColor] || statusColors.green;
 
   return (
-    <div className="bg-white rounded-xl border border-border-gray p-6 shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-white rounded-xl border border-[#E5E7EB] p-6 shadow-sm hover:shadow-md transition-shadow">
       {/* Status Badge */}
       <div className="flex items-center justify-between mb-4">
         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${colors.bg} ${colors.text}`}>
@@ -35,10 +35,10 @@ export default function ProjectCard({ project }) {
       </div>
 
       {/* Project Name & Location */}
-      <h3 className="text-xl font-semibold text-text-primary mb-2">
+      <h3 className="text-xl font-semibold text-[#1F2937] mb-2">
         {project.name}
       </h3>
-      <div className="flex items-center gap-1 text-text-secondary text-sm mb-4">
+      <div className="flex items-center gap-1 text-[#6B7280] text-sm mb-4">
         <MapPin className="w-4 h-4" />
         <span>{project.location}</span>
       </div>
@@ -46,10 +46,10 @@ export default function ProjectCard({ project }) {
       {/* Progress Bar */}
       <div className="mb-4">
         <div className="flex justify-between text-sm mb-1">
-          <span className="text-text-secondary">Progress</span>
-          <span className="font-medium text-text-primary">{project.progress}%</span>
+          <span className="text-[#6B7280]">Progress</span>
+          <span className="font-medium text-[#1F2937]">{project.progress}%</span>
         </div>
-        <div className="h-2 bg-bg-gray rounded-full overflow-hidden">
+        <div className="h-2 bg-[#F8F9FA] rounded-full overflow-hidden">
           <div
             className={`h-full ${colors.progress} rounded-full transition-all duration-500`}
             style={{ width: `${project.progress}%` }}
@@ -60,21 +60,21 @@ export default function ProjectCard({ project }) {
       {/* Budget */}
       <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
         <div>
-          <p className="text-text-muted">Budget</p>
-          <p className="font-semibold text-text-primary">
+          <p className="text-[#9CA3AF]">Budget</p>
+          <p className="font-semibold text-[#1F2937]">
             ${project.budget.toLocaleString()}
           </p>
         </div>
         <div>
-          <p className="text-text-muted">Spent</p>
-          <p className="font-semibold text-text-primary">
+          <p className="text-[#9CA3AF]">Spent</p>
+          <p className="font-semibold text-[#1F2937]">
             ${project.spent.toLocaleString()}
           </p>
         </div>
       </div>
 
       {/* Timeline */}
-      <div className="text-xs text-text-secondary mb-4 border-t border-border-gray pt-4">
+      <div className="text-xs text-[#6B7280] mb-4 border-t border-[#E5E7EB] pt-4">
         <p>Started: {project.startDate}</p>
         <p>Est. End: {project.endDate}</p>
       </div>
@@ -82,14 +82,14 @@ export default function ProjectCard({ project }) {
       {/* Predictions / AI Status */}
       <div className="mb-4">
         {project.aiStatus ? (
-          <div className="flex items-center gap-2 text-sm text-text-secondary">
+          <div className="flex items-center gap-2 text-sm text-[#6B7280]">
             <Loader2 className="w-4 h-4 animate-spin" />
             <span>{project.aiStatus}</span>
           </div>
         ) : project.predictionsReady > 0 ? (
           <div className="flex items-center gap-2">
-            <span className="relative flex items-center gap-1 px-3 py-1 bg-ruck-orange-light text-ruck-orange rounded-full text-xs font-semibold">
-              <span className="w-2 h-2 bg-ruck-orange rounded-full animate-pulse"></span>
+            <span className="relative flex items-center gap-1 px-3 py-1 bg-[#FFF4E5] text-[#FFA500] rounded-full text-xs font-semibold">
+              <span className="w-2 h-2 bg-[#FFA500] rounded-full animate-pulse"></span>
               {project.predictionsReady} prediction{project.predictionsReady > 1 ? 's' : ''} ready
             </span>
           </div>
@@ -97,16 +97,16 @@ export default function ProjectCard({ project }) {
       </div>
 
       {/* Actions */}
-      <div className="flex gap-3 pt-4 border-t border-border-gray">
-        <button className="flex-1 px-4 py-2 border-2 border-border-gray rounded-lg text-sm font-medium text-text-primary hover:bg-bg-gray transition-colors">
+      <div className="flex gap-3 pt-4 border-t border-[#E5E7EB]">
+        <button className="flex-1 px-4 py-2 border-2 border-[#E5E7EB] rounded-lg text-sm font-medium text-[#1F2937] hover:bg-[#F8F9FA] transition-colors">
           View Details
         </button>
         {project.aiStatus ? (
-          <button className="flex-1 px-4 py-2 border-2 border-border-gray rounded-lg text-sm font-medium text-text-primary hover:bg-bg-gray transition-colors">
+          <button className="flex-1 px-4 py-2 border-2 border-[#E5E7EB] rounded-lg text-sm font-medium text-[#1F2937] hover:bg-[#F8F9FA] transition-colors">
             Upload Documents
           </button>
         ) : (
-          <button className="flex-1 px-4 py-2 bg-ruck-orange text-white rounded-lg text-sm font-semibold hover:bg-ruck-orange-hover transition-colors">
+          <button className="flex-1 px-4 py-2 bg-[#FFA500] text-white rounded-lg text-sm font-semibold hover:bg-[#FF9500] transition-colors">
             Order Materials
           </button>
         )}
