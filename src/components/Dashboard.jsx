@@ -254,7 +254,7 @@ export default function Dashboard({ project }) {
 
   if (!project) {
     return (
-      <div className="max-w-4xl mx-auto px-6 py-12 text-center">
+      <div className="px-8 py-12 text-center">
         <Package className="w-12 h-12 text-[#999] mx-auto mb-4" />
         <h2 className="text-xl font-semibold text-[#1a1a1a] mb-2">Select a Project</h2>
         <p className="text-[#666]">Choose a project from the dropdown above to get started</p>
@@ -263,7 +263,7 @@ export default function Dashboard({ project }) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-6">
+    <div className="px-8 py-6">
       {/* Project Info */}
       <ProjectInfo project={project} />
 
